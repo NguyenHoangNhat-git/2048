@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_row="3"
+    android:stretchColumns="*"
+    android:id="@+id/main"
+    android:padding="20dp"
+    android:background="@color/ingame_bg_color">
+
+    <TableRow
+        android:layout_height="18sp"
+        android:textStyle="bold">
+
+        <TextView
+            android:id="@+id/col1"
+            style="@style/title_style"
+            android:text="2048"
+            android:background="@color/title_color"
+            android:textColor="@color/white"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/col2"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/score_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/score_cell"
+                    style="@style/score_cell_style"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/score_title_style"
+                        android:text="SCORE"
+                        android:id="@+id/score_title"/>
+
+                    <TextView
+                        android:text="520"
+                        style="@style/score_style"
+                        android:id="@+id/score"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    style="@style/undo_game_btn_style"
+                    android:id="@+id/new_btn"
+                    android:text="NEW"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/col3"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/max_score_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/max_score_cell"
+                    style="@style/score_cell_style"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/score_title_style"
+                        android:text="BEST"
+                        android:id="@+id/max_score_title"/>
+
+                    <TextView
+                        android:text="520"
+                        style="@style/score_style"
+                        android:id="@+id/max_score"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    style="@style/undo_game_btn_style"
+                    android:id="@+id/undo_btn"
+                    android:text="UNDO" />
+            </LinearLayout>
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="Sample tips, Sample tips, Sample tips, Sample tips"
+            style="@style/tips_style"
+            android:id="@+id/tips"
+            android:layout_weight="3" />
+    </TableRow>
+
+    <TableRow>
+        <GridLayout
+            android:id="@+id/game_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="1"
+            android:background="@color/game_panel_bg_color"
+            android:padding="5dp">
+        </GridLayout>
+    </TableRow>
+</TableLayout>
