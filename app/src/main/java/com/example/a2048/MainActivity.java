@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     private GameGrid gameGrid;
 
+
+    /// //////////// SETUP ////////////////////////////
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,37 +29,30 @@ public class MainActivity extends AppCompatActivity {
         setUpBtn();
         updateScore(0);
 
+        /// //////////// SETUP ////////////////////////////
         binding.gameGrid.setOnTouchListener(new SwipeHandler(this, new SwipeHandler.SwipeListener() {
             @Override
             public void onSwipeLeft() {
-                int score = game.moveLeft();
-                game.spawnRandom();
-                gameGrid.refresh();
-                updateScore(score);
+                int gained = game.moveLeft();
+                update(gained);
             }
 
             @Override
             public void onSwipeRight() {
-                int score = game.moveRight();
-                game.spawnRandom();
-                gameGrid.refresh();
-                updateScore(score);
+                int gained = game.moveRight();
+                update(gained);
             }
 
             @Override
             public void onSwipeUp() {
-                int score = game.moveUp();
-                game.spawnRandom();
-                gameGrid.refresh();
-                updateScore(score);
+                int gained = game.moveUp();
+                update(gained);
             }
 
             @Override
             public void onSwipeDown() {
-                int score = game.moveDown();
-                game.spawnRandom();
-                gameGrid.refresh();
-                updateScore(score);
+                int gained = game.moveDown();
+                update(gained);
             }
         }));
     }
@@ -80,9 +75,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //////////////////// END GAME //////////////////
+    private void handleEndGame(int state) {
+        if (state == 1) {
+            // navigate to win screen
+        } else if (state == -1) {
+            // navigate to lose screen
+            binding.title.setText("LOST");
+        }
+    }
+
+    /// /////////////// UTILITY ////////////////////////
+
+    public void update(int gained){
+        if (gained != -1) {
+            game.spawnRandom();
+            game.updateScore(gained);
+        }
+
+        gameGrid.refresh();
+        updateScore(game.getScore());
+
+        int state = game.checkEndGame();
+        if (state != 0) handleEndGame(state);
+    }
+
     public void updateScore(int score){
-        int newScore = game.getScore() + score;
-        game.updateScore(newScore);
         binding.score.setText(Integer.toString(game.getScore()));
     }
+
+
+
 }

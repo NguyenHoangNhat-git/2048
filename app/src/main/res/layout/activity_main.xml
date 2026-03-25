@@ -13,7 +13,7 @@
         android:textStyle="bold">
 
         <TextView
-            android:id="@+id/col1"
+            android:id="@+id/title"
             style="@style/title_style"
             android:text="2048"
             android:background="@color/title_color"

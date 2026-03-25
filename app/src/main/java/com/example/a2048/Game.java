@@ -10,9 +10,11 @@ public class Game {
     private ArrayList<ArrayList<Cell>> previousCells;
     private int previousScore;
     private int currentScore;
+    private int stopScore;
 
     public Game(int gridSize) {
         this.gridSize = gridSize;
+        this.stopScore = 2024;
         this.cells = new ArrayList<>();
         for (int i = 0; i < gridSize; i++) {
             ArrayList<Cell> row = new ArrayList<>();
@@ -76,6 +78,11 @@ public class Game {
 
             // Write the result back
             setLine(i, result, transpose, reverse);
+        }
+
+        if (!boardChanged()) {
+            undo(); // roll back cells and score
+            return -1;
         }
 
         return score;
@@ -152,10 +159,51 @@ public class Game {
         return true;
     }
 
-    public void updateScore(int score){
+    public void updateScore(int scoreToAdd){
         previousScore = currentScore;
-        currentScore = score;
+        currentScore += scoreToAdd;
+    }
+
+    // return 0 if nothing, 1 if win(score reaches stopScore),
+    // -1 if lose (no more moves)
+    public int checkEndGame(){
+        // Win
+        for (int i =0; i < gridSize; i++)
+            for(int j = 0; j < gridSize; j++)
+                if (getCellVal(i, j) == this.stopScore)
+                    return 1;
+
+        // Lose
+        if (!hasMoveLeft())
+            return -1;
+
+        return 0;
+    }
+
+    public boolean hasMoveLeft(){
+        for (int i = 0; i < gridSize; i++){
+            for (int j = 0; j < gridSize; j++){
+                if (getCellVal(i, j) == 0)
+                    return true;
+
+                if(j+ 1 < gridSize && getCellVal(i, j) == getCellVal(i, j+1))
+                    return true;
+
+                if(i+1 < gridSize && getCellVal(i, j) == getCellVal(i+1, j))
+                    return true;
+            }
         }
+        return false;
+    }
+
+
+    private boolean boardChanged() {
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++)
+                if (cells.get(i).get(j).getVal() != previousCells.get(i).get(j).getVal())
+                    return true;
+        return false;
+    }
     /// /////////////////// EXTRA ///////////////////
     // Call this before every move to snapshot the state
     private void saveState() {
