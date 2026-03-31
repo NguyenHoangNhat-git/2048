@@ -11,6 +11,7 @@ public class Game {
     private int previousScore;
     private int currentScore;
     private int stopScore;
+    private int moves = 0;
 
     public Game(int gridSize) {
         this.gridSize = gridSize;
@@ -85,6 +86,7 @@ public class Game {
             return -1;
         }
 
+        moves++;
         return score;
     }
 
@@ -245,5 +247,9 @@ public class Game {
 
     public int getScore(){
         return this.currentScore;
+    }
+
+    public int getMoves(){
+        return this.moves;
     }
 }

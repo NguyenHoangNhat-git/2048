@@ -10,7 +10,9 @@ import android.view.ViewTreeObserver;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 public class GameGrid {
     private final GridLayout gridLayout;
@@ -67,6 +69,7 @@ private final Game game;
                 cell.setTextColor(Color.WHITE);
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 cell.setTypeface(null, Typeface.BOLD);
+//                cell.setBackground(AppCompatResources.getDrawable(this.context, R.drawable.rounded_corners));
 //                cell.setBackground(Drawable.createFromPath("@drawable/rounded_corners"));
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();

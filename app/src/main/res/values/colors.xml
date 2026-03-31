@@ -10,7 +10,7 @@
 
 
     <color name="new_game_color">#a49381</color>
-    <color name="stats_bg_color">#fcf7f1</color>
+    <color name="stats_bg_color">#fcf9f2</color>
     <color name="stats_blur_color">#b9b1a6</color>
     <color name="dark_text_color">#6d695e</color>
 </resources>

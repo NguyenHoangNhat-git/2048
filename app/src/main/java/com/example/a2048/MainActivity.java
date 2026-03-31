@@ -1,5 +1,6 @@
 package com.example.a2048;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -74,18 +75,50 @@ public class MainActivity extends AppCompatActivity {
                 updateScore(0);
             }
         });
+        binding.viewStatsBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                viewStats();
+            }
+        });
+        binding.menuBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                goToMenu();
+            }
+        });
     }
 
+    /// /////////////// VIEW STATS ///////////////////////////
+    private void viewStats() {
+        Intent intent = new Intent(this, StatsActivity.class);
+        startActivity(intent);
+    }
+    /// /////////////// GO TO MENU ////////////////////////
+    private void goToMenu() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+    }
     //////////////////// END GAME //////////////////
     private void handleEndGame(int state) {
-        if (state == 1) {
-            // navigate to win screen
-        } else if (state == -1) {
-            // navigate to lose screen
-            binding.title.setText("LOST");
-        }
-    }
+        int gridSize = game.getGridSize();
 
+        // Flatten board to int[]
+        int[] board = new int[gridSize * gridSize];
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++)
+                board[i * gridSize + j] = game.getCellVal(i, j);
+
+        Intent intent = new Intent(this, EndGameActivity.class);
+        intent.putExtra("if_win",   state == 1);
+        intent.putExtra("score",    game.getScore());
+        intent.putExtra("moves",    game.getMoves());
+        intent.putExtra("grid_size", gridSize);
+        intent.putExtra("board",    board);
+        startActivity(intent);
+        
+        finish(); // remove MainActivity from back stack so back button doesn't return to a dead game
+    }
     /// /////////////// UTILITY ////////////////////////
 
     public void update(int gained){

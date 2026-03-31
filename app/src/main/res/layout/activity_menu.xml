@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/title_color"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:padding="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_gravity="center_vertical"
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="35dp"
+                android:text="&lt;"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                />
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/end_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="30dp"
+                android:textColor="@color/white"
+                android:text="Select your option"/>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/classic_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:layout_marginVertical="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners"
+            android:text="CLASSIC MODE"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/multiplayer_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:layout_marginVertical="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners"
+            android:text="MULTIPLAYER MODE"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/challenge_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:layout_marginVertical="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners"
+            android:text="CHALLENGE MODE"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tutorial_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:layout_marginVertical="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners"
+            android:text="TUTORIAL"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/view_stats_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:layout_marginVertical="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/undo_btn_color"
+            android:text="VIEW STATS"/>
+
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="20dp"-->
+<!--            android:layout_marginVertical="20dp"-->
+<!--            android:textSize="30sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:drawableTop="@mipmap/ic_launcher"-->
+<!--            android:text="TEST BUTTON"/>-->
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="20dp"-->
+<!--            android:layout_marginVertical="20dp"-->
+<!--            android:textSize="30sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:drawableTop="@mipmap/ic_launcher"-->
+<!--            android:text="TEST BUTTON"/>-->
+
+    </LinearLayout>
+</ScrollView>
