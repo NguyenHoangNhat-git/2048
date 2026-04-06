@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.a2048.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
         binding.maxScore.setText(Integer.toString(db.getHighestScore()));
 
         soundManager = new SoundManager(this);
+        binding.darkModeBtn.setOnClickListener(v -> toggleDarkMode());
+
+        boolean isCurrentlyDark = AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES;
+        binding.darkModeBtn.setText(isCurrentlyDark ? "Light Mode" : "Dark Mode");
 
         /// //////////// SETUP ////////////////////////////
         binding.gameGrid.setOnTouchListener(new SwipeHandler(this, new SwipeHandler.SwipeListener() {
@@ -161,6 +168,16 @@ public class MainActivity extends AppCompatActivity {
                 0, 0, 0
         );
         binding.soundBtn.setText(isSoundOn ? "Sound" : "Muted");
+    }
+    /// //////////////// DARK MODE ////////////////////////
+    private void toggleDarkMode() {
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
+        boolean isCurrentlyDark = currentMode == AppCompatDelegate.MODE_NIGHT_YES;
+
+        AppCompatDelegate.setDefaultNightMode(
+                isCurrentlyDark ? AppCompatDelegate.MODE_NIGHT_NO
+                        : AppCompatDelegate.MODE_NIGHT_YES
+        );
     }
     /// /////////////// UTILITY ////////////////////////
 

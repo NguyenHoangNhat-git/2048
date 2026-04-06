@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="title_color">#d4a847</color>
+    <color name="undo_btn_color">#c94c30</color>
+    <color name="ingame_bg_color">#1e1e1e</color>
+    <color name="default_game_cell_color">#3a3530</color>
+    <color name="game_panel_bg_color">#2d2a25</color>
+    <color name="new_game_color">#4a4340</color>
+    <color name="stats_bg_color">#121212</color>
+    <color name="stats_blur_color">#666055</color>
+    <color name="dark_text_color">#d6d0c8</color>
+
+    <!-- black and white stay the same, no need to override -->
+</resources>
