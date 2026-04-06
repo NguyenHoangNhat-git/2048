@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String DB_NAME    = "2048_stats.db";
-    private static final int    DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     private static final String TABLE_STATS       = "stats";
     private static final String COL_ID            = "id";
@@ -26,6 +26,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COL_GAMES_1024         = "games_1024";
     private static final String COL_SHORTEST_TIME_1024 = "shortest_time_1024";
     private static final String COL_FEWEST_MOVES_1024  = "fewest_moves_1024";
+
+    // Saved game state
+    private static final String TABLE_GAME_STATE  = "game_state";
+    private static final String COL_GRID_SIZE     = "grid_size";
+    private static final String COL_BOARD         = "board";      // stored as comma-separated string
+    private static final String COL_SCORE         = "score";
+    private static final String COL_MOVES         = "moves";
+    private static final String COL_HAS_STATE     = "has_state";
 
     public DatabaseHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -46,6 +54,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + COL_FEWEST_MOVES_1024  + " INTEGER DEFAULT 0)";
         db.execSQL(createTable);
         db.execSQL("INSERT INTO " + TABLE_STATS + " VALUES (1,0,0,0,0,0,0,0,0,0)");
+
+        final String CREATE_GAME_STATE =
+                "CREATE TABLE " + TABLE_GAME_STATE + " ("
+                        + COL_ID       + " INTEGER PRIMARY KEY, "
+                        + COL_GRID_SIZE + " INTEGER DEFAULT 4, "
+                        + COL_BOARD    + " TEXT, "
+                        + COL_SCORE    + " INTEGER DEFAULT 0, "
+                        + COL_MOVES    + " INTEGER DEFAULT 0, "
+                        + COL_HAS_STATE + " INTEGER DEFAULT 0)";
+        db.execSQL(CREATE_GAME_STATE);
+        db.execSQL("INSERT INTO " + TABLE_GAME_STATE + " VALUES (1, 4, '', 0, 0, 0)");
     }
 
     @Override
@@ -120,5 +139,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         return minutes + ":" + String.format("%02d", seconds);
+    }
+
+    /// //////////////////  Saving GAME State //////////////////////
+    public void saveGameState(int gridSize, int[] board, int score, int moves) {
+        // Flatten board array to comma-separated string
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < board.length; i++) {
+            sb.append(board[i]);
+            if (i < board.length - 1) sb.append(",");
+        }
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_GRID_SIZE,  gridSize);
+        values.put(COL_BOARD,      sb.toString());
+        values.put(COL_SCORE,      score);
+        values.put(COL_MOVES,      moves);
+        values.put(COL_HAS_STATE,  1);
+        db.update(TABLE_GAME_STATE, values, COL_ID + "=1", null);
+    }
+    // Load saved game state — returns null if none exists
+    public SavedGameState loadGameState() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_GAME_STATE, null,
+                COL_ID + "=1", null, null, null, null);
+
+        if (!cursor.moveToFirst()) { cursor.close(); return null; }
+
+        int hasState = cursor.getInt(cursor.getColumnIndexOrThrow(COL_HAS_STATE));
+        if (hasState == 0)         { cursor.close(); return null; }
+
+        int    gridSize  = cursor.getInt(cursor.getColumnIndexOrThrow(COL_GRID_SIZE));
+        String boardStr  = cursor.getString(cursor.getColumnIndexOrThrow(COL_BOARD));
+        int    score     = cursor.getInt(cursor.getColumnIndexOrThrow(COL_SCORE));
+        int    moves     = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MOVES));
+        cursor.close();
+
+        // Parse board string back to int[]
+        String[] parts = boardStr.split(",");
+        int[] board = new int[parts.length];
+        for (int i = 0; i < parts.length; i++)
+            board[i] = Integer.parseInt(parts[i]);
+
+        return new SavedGameState(gridSize, board, score, moves);
+    }
+
+    // Clear saved state after win/lose so a fresh game starts next time
+    public void clearGameState() {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_HAS_STATE, 0);
+        values.put(COL_BOARD, "");
+        values.put(COL_SCORE, 0);
+        values.put(COL_MOVES, 0);
+        db.update(TABLE_GAME_STATE, values, COL_ID + "=1", null);
     }
 }

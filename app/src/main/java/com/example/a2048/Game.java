@@ -270,4 +270,6 @@ public class Game {
     public int getMoves(){
         return this.moves;
     }
+
+    public void setMoves(int moves) { this.moves = moves; }
 }

@@ -31,9 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DatabaseHandler(this);
 
-        game = new Game(4);
-        game.spawnRandom();
-        game.spawnRandom();
+        SavedGameState saved = db.loadGameState();
+        if (saved != null) {
+            game = new Game(saved.gridSize);
+            for (int i = 0; i < saved.gridSize; i++)
+                for (int j = 0; j < saved.gridSize; j++)
+                    game.setCellVal(i, j, saved.board[i * saved.gridSize + j]);
+            game.updateScore(saved.score);
+            game.setMoves(saved.moves); // add setMoves() to Game.java — see below
+        } else {
+            game = new Game(4);
+            game.spawnRandom();
+            game.spawnRandom();
+        }
 
         gameGrid = new GameGrid(binding.gameGrid, this, game);
         gameGrid.build();
@@ -117,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         soundManager.release();
     }
+
+    // Save state when app goes to background
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCurrentGameState();
+    }
+
     /// /////////////// VIEW STATS ///////////////////////////
     private void viewStats() {
         Intent intent = new Intent(this, StatsActivity.class);
@@ -129,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //////////////////// END GAME //////////////////
     private void handleEndGame(int state) {
+        db.clearGameState();
         int elapsedSeconds = (int)((System.currentTimeMillis() - gameStartTime) / 1000);
         game.checkMilestones();
         db.saveGameResult(
@@ -206,6 +225,14 @@ public class MainActivity extends AppCompatActivity {
         binding.score.setText(Integer.toString(game.getScore()));
     }
 
+    private void saveCurrentGameState() {
+        int gridSize = game.getGridSize();
+        int[] board  = new int[gridSize * gridSize];
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++)
+                board[i * gridSize + j] = game.getCellVal(i, j);
+        db.saveGameState(gridSize, board, game.getScore(), game.getMoves());
+    }
 
     /// /////////////////// TESTING ///////////////////////
     private void setupTestScenarios() {
