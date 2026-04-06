@@ -12,10 +12,13 @@ public class Game {
     private int currentScore;
     private int stopScore;
     private int moves = 0;
+    private boolean reached512  = false;
+    private boolean reached1024 = false;
+
 
     public Game(int gridSize) {
         this.gridSize = gridSize;
-        this.stopScore = 2024;
+        this.stopScore = 2048;
         this.cells = new ArrayList<>();
         for (int i = 0; i < gridSize; i++) {
             ArrayList<Cell> row = new ArrayList<>();
@@ -231,6 +234,9 @@ public class Game {
 
     // Wipe the board and start fresh
     public void newGame() {
+        reached512  = false;
+        reached1024 = false;
+        moves = 0;
         previousCells = null;
         previousScore = 0;
         currentScore = 0;
@@ -240,6 +246,18 @@ public class Game {
         spawnRandom();
         spawnRandom();
     }
+
+    public void checkMilestones() {
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++) {
+                int val = getCellVal(i, j);
+                if (val >= 512)  reached512  = true;
+                if (val >= 1024) reached1024 = true;
+            }
+    }
+
+    public boolean hasReached512()  { return reached512;  }
+    public boolean hasReached1024() { return reached1024; }
 
     public boolean canUndo() {
         return previousCells != null;
