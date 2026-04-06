@@ -15,6 +15,7 @@ public class Game {
     private boolean reached512  = false;
     private boolean reached1024 = false;
 
+    private int challengeTarget = 0;
 
     public Game(int gridSize) {
         this.gridSize = gridSize;
@@ -36,6 +37,7 @@ public class Game {
     public void setCellVal(int row, int col, int val) {
         cells.get(row).get(col).setVal(val);
     }
+    public void setChallengeTarget(int target) { this.challengeTarget = target; }
 
     public int getGridSize() {
         return gridSize;
@@ -172,10 +174,11 @@ public class Game {
     // return 0 if nothing, 1 if win(score reaches stopScore),
     // -1 if lose (no more moves)
     public int checkEndGame(){
+        int winTile = challengeTarget > 0 ? challengeTarget : stopScore;
         // Win
         for (int i =0; i < gridSize; i++)
             for(int j = 0; j < gridSize; j++)
-                if (getCellVal(i, j) == this.stopScore)
+                if (getCellVal(i, j) >= winTile)
                     return 1;
 
         // Lose

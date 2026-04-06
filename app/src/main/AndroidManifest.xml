@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._2048">
         <activity
+            android:name=".ChallengeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuActivity"
             android:exported="false" />
         <activity

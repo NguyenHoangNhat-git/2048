@@ -26,5 +26,8 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.challengeMode.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChallengeActivity.class));
+        });
     }
 }
