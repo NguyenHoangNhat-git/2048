@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String DB_NAME    = "2048_stats.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     private static final String TABLE_STATS       = "stats";
     private static final String COL_ID            = "id";
@@ -34,6 +34,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COL_SCORE         = "score";
     private static final String COL_MOVES         = "moves";
     private static final String COL_HAS_STATE     = "has_state";
+
+    // All scores
+    private static final String TABLE_SCORES = "scores";
+    private static final String COL_GAME_SCORE = "game_score";
+    private static final String COL_GAME_DATE  = "game_date";
+
 
     public DatabaseHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -65,11 +71,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         + COL_HAS_STATE + " INTEGER DEFAULT 0)";
         db.execSQL(CREATE_GAME_STATE);
         db.execSQL("INSERT INTO " + TABLE_GAME_STATE + " VALUES (1, 4, '', 0, 0, 0)");
+
+        db.execSQL("CREATE TABLE " + TABLE_SCORES + " ("
+                + COL_ID         + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_GAME_SCORE + " INTEGER, "
+                + COL_GAME_DATE  + " TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GAME_STATE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCORES);
         onCreate(db);
     }
 
@@ -194,5 +207,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COL_SCORE, 0);
         values.put(COL_MOVES, 0);
         db.update(TABLE_GAME_STATE, values, COL_ID + "=1", null);
+    }
+
+    /// ///////////////////// ALL SCORES TABLE ////////////////////////
+
+    // Insert a score entry at end of every game
+    public void insertScore(int score) {
+        String date = new java.text.SimpleDateFormat(
+                "yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                .format(new java.util.Date());
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_GAME_SCORE, score);
+        values.put(COL_GAME_DATE,  date);
+        db.insert(TABLE_SCORES, null, values);
+    }
+
+    // Fetch all scores ranked highest first
+    public java.util.List<Integer> getAllScores() {
+        java.util.List<Integer> scores = new java.util.ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SCORES,
+                new String[]{COL_GAME_SCORE},
+                null, null, null, null,
+                COL_GAME_SCORE + " DESC");
+        while (cursor.moveToNext())
+            scores.add(cursor.getInt(0));
+        cursor.close();
+        return scores;
+    }
+    // Clear all scores
+    public void resetStats() {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_HIGHEST_SCORE, 0);
+        values.put(COL_TOTAL_SCORE,   0);
+        values.put(COL_TOTAL_GAMES,   0);
+        values.put(COL_GAMES_512,         0);
+        values.put(COL_SHORTEST_TIME_512,  0);
+        values.put(COL_FEWEST_MOVES_512,   0);
+        values.put(COL_GAMES_1024,         0);
+        values.put(COL_SHORTEST_TIME_1024, 0);
+        values.put(COL_FEWEST_MOVES_1024,  0);
+        db.update(TABLE_STATS, values, COL_ID + "=1", null);
+        db.delete(TABLE_SCORES, null, null);
     }
 }

@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     //////////////////// END GAME //////////////////
     private void handleEndGame(int state) {
         db.clearGameState();
+
         int elapsedSeconds = (int)((System.currentTimeMillis() - gameStartTime) / 1000);
         game.checkMilestones();
         db.saveGameResult(
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 game.hasReached512(),
                 game.hasReached1024()
         );
+        db.insertScore(game.getScore());
 
         int gridSize = game.getGridSize();
 

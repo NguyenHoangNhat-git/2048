@@ -4,291 +4,164 @@
     android:layout_height="match_parent"
     android:background="@color/stats_bg_color"
     android:orientation="vertical"
-    android:gravity="top"
     android:padding="60dp">
+
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_gravity="center_vertical"
             android:id="@+id/back_btn"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="40dp"
             android:background="@color/stats_bg_color"
             android:text="&lt;"
-            android:textSize="35dp"
+            android:textSize="35sp"
             android:textStyle="bold"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            />
-
+            style="@style/Widget.AppCompat.Button.Borderless"/>
         <TextView
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Classic Stats"
-            android:textSize="28dp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="@color/dark_text_color"
             android:layout_weight="1"
-            android:textAlignment="center"
-            />
-
+            android:textAlignment="center"/>
         <TextView
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Info"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/stats_blur_color"
             android:layout_weight="1"
-            android:textAlignment="textEnd"
-            />
-
+            android:textAlignment="textEnd"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginVertical="20dp">
 
-        <TextView
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Classic Stats"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_text_color"
-            />
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Classic Stats -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Best Score"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/best_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="13,454"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Score"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/total_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="13,454"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Games"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/total_games"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="13,454"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginVertical="20dp">
+                android:orientation="vertical"
+                android:layout_marginVertical="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Classic Stats"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_text_color"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Best Score" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/best_score" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Score" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/total_score" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Games" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/total_games" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="512"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_text_color"
-            />
+            <!-- 512 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="20dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="512" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/dark_text_color"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Games Reached" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/games_512" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shortest Time" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/shortest_time_512" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fewest Moves" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/fewest_moves_512" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- 1024 -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Games Reached"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/games_512"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shortest Time "
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/shortest_time_512"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3:08"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fewest Moves"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/fewest_moves_512"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="254"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_marginVertical="20dp">
+                android:orientation="vertical"
+                android:layout_marginVertical="20dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="1024" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/dark_text_color"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Games Reached" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/games_1024" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shortest Time" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/shortest_time_1024" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fewest Moves" android:textSize="18sp" android:textColor="@color/dark_text_color" android:layout_weight="1"/>
+                    <TextView android:id="@+id/fewest_moves_1024" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="@color/dark_text_color"/>
+                </LinearLayout>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1024"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_text_color"
-            />
+            <!-- All Scores — dynamically populated -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="All Scores"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_text_color"/>
+                <LinearLayout
+                    android:id="@+id/scores_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Games Reached"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/games_1024"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shortest Time "
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/shortest_time_1024"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3:08"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fewest Moves"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                android:layout_weight="1"
-                />
-            <TextView
-                android:id="@+id/fewest_moves_1024"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="254"
-                android:textSize="18dp"
-                android:textColor="@color/dark_text_color"
-                />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
+    <!-- footer — no scrolls -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="@color/stats_blur_color"
+        android:layout_marginTop="8dp"
         android:text="Stats do not include games in progress"/>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/stats_reset_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/stats_bg_color"
         android:text="Reset Stats"
         android:textColor="@color/dark_text_color"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold"/>
+
 </LinearLayout>

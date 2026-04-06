@@ -1,9 +1,11 @@
 package com.example.a2048;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.VolumeShaper;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
@@ -66,7 +68,7 @@ private final Game game;
             for (int j = 0; j < gridSize; j++) {
                 TextView cell = new TextView(context);
                 cell.setGravity(Gravity.CENTER);
-                cell.setTextColor(Color.WHITE);
+                cell.setTextColor(getCellTextColor(0));
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 cell.setTypeface(null, Typeface.BOLD);
 //                cell.setBackground(AppCompatResources.getDrawable(this.context, R.drawable.rounded_corners));
@@ -89,32 +91,44 @@ private final Game game;
     // Sync all cell views with current game state
     public void refresh() {
         int gridSize = game.getGridSize();
-                for (int i = 0; i < gridSize; i++) {
-                    for (int j = 0; j < gridSize; j++) {
-                        int val = game.getCellVal(i, j);
-                        TextView cell = cellViews[i][j];
-                        cell.setText(val == 0 ? "" : String.valueOf(val));
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int val = game.getCellVal(i, j);
+                TextView cell = cellViews[i][j];
+                cell.setText(val == 0 ? "" : String.valueOf(val));
                 cell.setBackgroundColor(getCellColor(val));
+                cell.setTextColor(getCellTextColor(val));
             }
         }
     }
 
     // Color map matching classic 2048 colors
     private int getCellColor(int val) {
+        boolean isDark = (context.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+
         switch (val) {
-            case 2:    return Color.parseColor("#eee4da");
-            case 4:    return Color.parseColor("#ede0c8");
-            case 8:    return Color.parseColor("#f2b179");
-            case 16:   return Color.parseColor("#f59563");
-            case 32:   return Color.parseColor("#f67c5f");
-            case 64:   return Color.parseColor("#f65e3b");
-            case 128:  return Color.parseColor("#edcf72");
-            case 256:  return Color.parseColor("#edcc61");
-            case 512:  return Color.parseColor("#edc850");
-            case 1024: return Color.parseColor("#edc53f");
-            case 2048: return Color.parseColor("#edc22e");
+            case 2:    return isDark ? Color.parseColor("#3d3a30") : Color.parseColor("#eee4da");
+            case 4:    return isDark ? Color.parseColor("#4a4535") : Color.parseColor("#ede0c8");
+            case 8:    return isDark ? Color.parseColor("#a0522d") : Color.parseColor("#f2b179");
+            case 16:   return isDark ? Color.parseColor("#b84c1a") : Color.parseColor("#f59563");
+            case 32:   return isDark ? Color.parseColor("#c43d20") : Color.parseColor("#f67c5f");
+            case 64:   return isDark ? Color.parseColor("#b83010") : Color.parseColor("#f65e3b");
+            case 128:  return isDark ? Color.parseColor("#a08020") : Color.parseColor("#edcf72");
+            case 256:  return isDark ? Color.parseColor("#9a7a18") : Color.parseColor("#edcc61");
+            case 512:  return isDark ? Color.parseColor("#947510") : Color.parseColor("#edc850");
+            case 1024: return isDark ? Color.parseColor("#8e7008") : Color.parseColor("#edc53f");
+            case 2048: return isDark ? Color.parseColor("#886b00") : Color.parseColor("#edc22e");
             default:   return ContextCompat.getColor(context, R.color.default_game_cell_color);
         }
+    }
+    private int getCellTextColor(int val) {
+        boolean isDark = (context.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isDark) return Color.WHITE;
+        // In light mode, 2 and 4 use dark text, everything else white
+        return (val == 2 || val == 4) ? Color.parseColor("#776e65") : Color.WHITE;
     }
 
     private int dpToPx(int dp) {
