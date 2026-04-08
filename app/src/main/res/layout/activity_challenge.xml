@@ -120,5 +120,65 @@
             android:padding="5dp"
             android:layout_weight="1"/>
     </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="3"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sound_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_fas_volume_up"
+                android:drawableTint="@color/white"
+                android:drawablePadding="6dp"
+                android:gravity="start|center_vertical"
+                android:text="Sound"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/dark_mode_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_fas_moon"
+                android:drawableTint="@color/white"
+                android:drawablePadding="6dp"
+                android:gravity="start|center_vertical"
+                android:text="Dark Mode"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+
+    </TableRow>
+    <TableRow>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/animation_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_fas_star"
+            android:drawableTint="@color/white"
+            android:drawablePadding="6dp"
+            android:gravity="start|center_vertical"
+            android:text="Animation"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+    </TableRow>
 
 </TableLayout>

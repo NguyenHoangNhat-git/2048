@@ -7,12 +7,11 @@ import android.view.KeyEvent;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.a2048.databinding.ActivityChallengeBinding;
 
-public class ChallengeActivity extends AppCompatActivity {
+public class ChallengeActivity extends BaseGameActivity {
 
     private ActivityChallengeBinding binding;
     private Game game;
     private GameGrid gameGrid;
-    private SoundManager soundManager;
     private CountDownTimer countDownTimer;
     private SwipeHandler swipeHandler;
 
@@ -36,6 +35,7 @@ public class ChallengeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         soundManager = new SoundManager(this);
+        setupToggles();
 
         setupChallenge();
 
@@ -70,6 +70,14 @@ public class ChallengeActivity extends AppCompatActivity {
         setupSwipe();
         startCountdown(timeLimitMs);
     }
+
+    /// ////////////////// BASE GAME ////////////////////////////
+    @Override
+    protected android.widget.Button getSoundBtn()     { return binding.soundBtn;     }
+    @Override
+    protected android.widget.Button getDarkModeBtn()  { return binding.darkModeBtn;  }
+    @Override
+    protected android.widget.Button getAnimationBtn() { return binding.animationBtn; }
 
     private void startCountdown(long ms) {
         cancelTimer();
@@ -114,8 +122,12 @@ public class ChallengeActivity extends AppCompatActivity {
     private void handleMove(int score) {
         if (gameEnded || score == -1) return;
 
-        if (score > 0) soundManager.playMerge();
-        else           soundManager.playSwipe();
+        if (score > 0) {
+            soundManager.playMerge();
+            if (isAnimationOn) gameGrid.animateMerge(); // ✅ uses base class field
+        } else {
+            soundManager.playSwipe();
+        }
 
         game.updateScore(score);
         game.spawnRandom();

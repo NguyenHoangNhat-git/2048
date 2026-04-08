@@ -164,7 +164,8 @@
                 android:gravity="start|center_vertical"
                 android:text="Sound"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dark_mode_btn"
@@ -178,8 +179,26 @@
                 android:gravity="start|center_vertical"
                 android:text="Dark Mode"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
-
+                android:textSize="20sp"
+                android:textStyle="bold"/>
         </LinearLayout>
+
+
+    </TableRow>
+    <TableRow>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/animation_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_fas_star"
+        android:drawableTint="@color/white"
+        android:drawablePadding="6dp"
+        android:gravity="start|center_vertical"
+        android:text="Animation"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     </TableRow>
 </TableLayout>

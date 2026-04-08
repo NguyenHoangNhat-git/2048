@@ -1,5 +1,8 @@
 package com.example.a2048;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -9,12 +12,18 @@ import android.media.VolumeShaper;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewTreeObserver;
+import android.view.accessibility.AccessibilityRecord;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameGrid {
     private final GridLayout gridLayout;
@@ -24,6 +33,9 @@ private final Game game;
 
     private final int marginDp = 5;
     private final int paddingDp = 5;
+
+    private static final int ANIM_DURATION_MS = 400;
+
 
     public GameGrid(GridLayout gridLayout, Context context, Game game) {
         this.gridLayout = gridLayout;
@@ -137,4 +149,29 @@ private final Game game;
                 context.getResources().getDisplayMetrics()
         );
     }
+
+
+    /// ///////////////////// ANIMATION ///////////////////////////////
+
+    // Call after animateMove completes to pop cells that just merged
+    public void animateMerge() {
+        int gridSize = game.getGridSize();
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int val = game.getCellVal(i, j);
+                if (val == 0) continue;
+
+                TextView cell = cellViews[i][j];
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(cell, "scaleX", 1f, 1.2f, 1f);
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(cell, "scaleY", 1f, 1.2f, 1f);
+                scaleX.setDuration(150);
+                scaleY.setDuration(150);
+
+                AnimatorSet pop = new AnimatorSet();
+                pop.playTogether(scaleX, scaleY);
+                pop.start();
+            }
+        }
+    }
+
 }

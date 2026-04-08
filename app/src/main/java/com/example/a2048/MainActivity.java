@@ -11,15 +11,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.a2048.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseGameActivity {
     private ActivityMainBinding binding;
     private Game game;
     private GameGrid gameGrid;
     private DatabaseHandler db;
     private long gameStartTime;
-
-    private boolean isSoundOn = true;
-    private SoundManager soundManager;
 
 
     /// //////////// SETUP ////////////////////////////
@@ -49,66 +46,42 @@ public class MainActivity extends AppCompatActivity {
         gameGrid.build();
         setupTestScenarios();
 
-        binding.soundBtn.setOnClickListener(v -> toggleSound());
 
         setUpBtn();
         updateScore(0);
         binding.maxScore.setText(Integer.toString(db.getHighestScore()));
 
         soundManager = new SoundManager(this);
-        binding.darkModeBtn.setOnClickListener(v -> toggleDarkMode());
+        setupToggles();
 
         boolean isCurrentlyDark = AppCompatDelegate.getDefaultNightMode()
                 == AppCompatDelegate.MODE_NIGHT_YES;
-        binding.darkModeBtn.setText(isCurrentlyDark ? "Light Mode" : "Dark Mode");
 
         /// //////////// SETUP ////////////////////////////
         binding.gameGrid.setOnTouchListener(new SwipeHandler(this, new SwipeHandler.SwipeListener() {
-            @Override
-            public void onSwipeLeft() {
-                int gained = game.moveLeft();
-                update(gained);
-            }
-
-            @Override
-            public void onSwipeRight() {
-                int gained = game.moveRight();
-                update(gained);
-            }
-
-            @Override
-            public void onSwipeUp() {
-                int gained = game.moveUp();
-                update(gained);
-            }
-
-            @Override
-            public void onSwipeDown() {
-                int gained = game.moveDown();
-                update(gained);
-            }
+            @Override public void onSwipeLeft()  { handleMove(game.moveLeft());  }
+            @Override public void onSwipeRight() { handleMove(game.moveRight()); }
+            @Override public void onSwipeUp()    { handleMove(game.moveUp());    }
+            @Override public void onSwipeDown()  { handleMove(game.moveDown());  }
         }));
 
         gameStartTime = System.currentTimeMillis();
     }
 
     public void setUpBtn(){
-        binding.newBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                game.newGame();
-                gameGrid.refresh();
-                updateScore(0);
-            }
+        binding.newBtn.setOnClickListener(v -> {
+            game.newGame();
+            gameGrid.refresh();
+            updateScore(0);
         });
-        binding.undoBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                int score = game.undo();
-                gameGrid.refresh();
-                updateScore(0);
-            }
+
+        binding.undoBtn.setOnClickListener(v -> {
+            if (!game.canUndo()) return;
+            game.undo();
+            gameGrid.refresh();
+            updateScore(0);
         });
+
         binding.viewStatsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -121,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 goToMenu();
             }
         });
+        binding.animationBtn.setOnClickListener(v -> toggleAnimation());
     }
 
     protected void onDestroy() {
@@ -135,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
         saveCurrentGameState();
     }
 
+    /// //////////////////// BASE GAME /////////////////////////////////
+    @Override
+    protected android.widget.Button getSoundBtn()     { return binding.soundBtn;     }
+    @Override
+    protected android.widget.Button getDarkModeBtn()  { return binding.darkModeBtn;  }
+    @Override
+    protected android.widget.Button getAnimationBtn() { return binding.animationBtn; }
     /// /////////////// VIEW STATS ///////////////////////////
     private void viewStats() {
         Intent intent = new Intent(this, StatsActivity.class);
@@ -178,47 +159,27 @@ public class MainActivity extends AppCompatActivity {
         
         finish(); // remove MainActivity from back stack so back button doesn't return to a dead game
     }
-
-    /// /////////////// SOUND /////////////////////
-    private void toggleSound() {
-        isSoundOn = !isSoundOn;
-        soundManager.setEnabled(isSoundOn);
-        binding.soundBtn.setCompoundDrawablesWithIntrinsicBounds(
-                isSoundOn ? R.drawable.ic_fas_volume_up
-                        : R.drawable.ic_fas_volume_off,
-                0, 0, 0
-        );
-        binding.soundBtn.setText(isSoundOn ? "Sound" : "Muted");
-    }
-    /// //////////////// DARK MODE ////////////////////////
-    private void toggleDarkMode() {
-        int currentMode = AppCompatDelegate.getDefaultNightMode();
-        boolean isCurrentlyDark = currentMode == AppCompatDelegate.MODE_NIGHT_YES;
-
-        AppCompatDelegate.setDefaultNightMode(
-                isCurrentlyDark ? AppCompatDelegate.MODE_NIGHT_NO
-                        : AppCompatDelegate.MODE_NIGHT_YES
-        );
-    }
     /// /////////////// UTILITY ////////////////////////
 
-    public void update(int gained){
-        if (gained != -1) {
-            game.spawnRandom();
-            game.updateScore(gained);
-        }
+    private void handleMove(int gained) {
+        if (gained == -1) return;
 
-        if (gained > 0) soundManager.playMerge();
-        else soundManager.playSwipe();
-
+        game.spawnRandom();
+        game.updateScore(gained);
         gameGrid.refresh();
         updateScore(game.getScore());
 
-        int state = game.checkEndGame();
+        if (gained > 0) {
+            soundManager.playMerge();
+            if (isAnimationOn) gameGrid.animateMerge();
+        } else {
+            soundManager.playSwipe();
+        }
 
+        int state = game.checkEndGame();
         if (state != 0) {
             if (state == 1) soundManager.playWon();
-            else soundManager.playGameOver();
+            else            soundManager.playGameOver();
             handleEndGame(state);
         }
     }
@@ -308,4 +269,15 @@ public class MainActivity extends AppCompatActivity {
         gameGrid.refresh();
         Toast.makeText(this, "Test scenario loaded — swipe left to trigger!", Toast.LENGTH_SHORT).show();
     }
+
+    private int[][] captureBoard() {
+        int gridSize = game.getGridSize();
+        int[][] board = new int[gridSize][gridSize];
+        for (int i = 0; i < gridSize; i++)
+            for (int j = 0; j < gridSize; j++)
+                board[i][j] = game.getCellVal(i, j);
+        return board;
+    }
+
+
 }
