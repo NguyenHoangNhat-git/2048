@@ -18,6 +18,7 @@ public class MainActivity extends BaseGameActivity {
     private DatabaseHandler db;
     private long gameStartTime;
 
+    private int currentGridSize = 4;
 
     /// //////////// SETUP ////////////////////////////
     @Override
@@ -28,7 +29,12 @@ public class MainActivity extends BaseGameActivity {
 
         db = new DatabaseHandler(this);
 
-        SavedGameState saved = db.loadGameState();
+        boolean forceNew = getIntent().getBooleanExtra("force_new_game", false);
+        int gridSize = getSharedPreferences(GridSizeActivity.PREFS_NAME, MODE_PRIVATE)
+                .getInt(GridSizeActivity.KEY_GRID_SIZE, 4);
+
+
+        SavedGameState saved = forceNew ? null : db.loadGameState();
         if (saved != null) {
             game = new Game(saved.gridSize);
             for (int i = 0; i < saved.gridSize; i++)
@@ -37,7 +43,8 @@ public class MainActivity extends BaseGameActivity {
             game.updateScore(saved.score);
             game.setMoves(saved.moves); // add setMoves() to Game.java — see below
         } else {
-            game = new Game(4);
+            if (forceNew) db.clearGameState();
+            game = new Game(currentGridSize);
             game.spawnRandom();
             game.spawnRandom();
         }
@@ -67,6 +74,7 @@ public class MainActivity extends BaseGameActivity {
 
         gameStartTime = System.currentTimeMillis();
     }
+
 
     public void setUpBtn(){
         binding.newBtn.setOnClickListener(v -> {
@@ -107,6 +115,25 @@ public class MainActivity extends BaseGameActivity {
     protected void onPause() {
         super.onPause();
         saveCurrentGameState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int savedSize = getSharedPreferences(GridSizeActivity.PREFS_NAME, MODE_PRIVATE)
+                .getInt(GridSizeActivity.KEY_GRID_SIZE, 4);
+
+        if (savedSize != currentGridSize) {
+            currentGridSize = savedSize;
+            // Clear any saved state so it doesn't restore the old grid size
+            db.clearGameState();
+            game = new Game(currentGridSize);
+            game.spawnRandom();
+            game.spawnRandom();
+            gameGrid = new GameGrid(binding.gameGrid, this, game);
+            gameGrid.build();
+        }
     }
 
     /// //////////////////// BASE GAME /////////////////////////////////
@@ -212,9 +239,14 @@ public class MainActivity extends BaseGameActivity {
             return false;
         });
     }
+    private boolean checkGridSize() {
+        if (game.getGridSize() != 4) return false;
+        return true;
+    }
 
     // Q — one move away from 2048
     private void loadScenario2048() {
+        if (!checkGridSize()) return;
         int[][] board = {
                 {1024, 1024,   0,   0},
                 { 512,  256, 128,  64},
@@ -226,6 +258,7 @@ public class MainActivity extends BaseGameActivity {
 
     // W — one move away from 1024
     private void loadScenario1024() {
+        if (!checkGridSize()) return;
         int[][] board = {
                 { 512,  512,   0,   0},
                 { 256,  128,  64,  32},
@@ -237,6 +270,7 @@ public class MainActivity extends BaseGameActivity {
 
     // E — one move away from 512
     private void loadScenario512() {
+        if (!checkGridSize()) return;
         int[][] board = {
                 { 256,  256,   0,   0},
                 { 128,   64,  32,  16},
@@ -247,14 +281,15 @@ public class MainActivity extends BaseGameActivity {
     }
     // R — one move away from losing (board full, no adjacent equal tiles)
     private void loadScenarioLose() {
+        if (!checkGridSize()) return;
         int[][] board = {
                 {   2, 256,   4, 128},
-                { 512,   8, 512,   2},
+                { 512,   8, 512,   0},
                 {   4, 128,   2, 256},
                 { 128,   2, 256,   4}
         };
         loadBoard(board, 500);
-        Toast.makeText(this, "Test scenario loaded — any swipe triggers game over!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Test scenario loaded — swipe down = game over!", Toast.LENGTH_SHORT).show();
     }
 
     private void loadBoard(int[][] board, int score) {

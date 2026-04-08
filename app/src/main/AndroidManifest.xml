@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._2048">
         <activity
+            android:name=".GridSizeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TutorialActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChallengeActivity"
             android:exported="false" />
         <activity

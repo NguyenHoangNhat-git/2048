@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,33 +15,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatButton
-                android:layout_gravity="center_vertical"
                 android:id="@+id/back_btn"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="35dp"
                 android:text="&lt;"
-                android:textSize="40dp"
+                android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                />
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
             <TextView
                 android:layout_gravity="center_vertical"
-                android:id="@+id/end_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="40sp"
+                android:text="GRID SIZE"
+                android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginVertical="30dp"
-                android:textColor="@color/white"
-                android:text="Select your option"/>
+                android:textColor="@color/white"/>
+
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Select a grid size for Classic Mode"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginVertical="20dp"/>
+
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/classic_mode"
+            android:id="@+id/grid_3x3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -50,11 +61,10 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_corners"
-            android:text="CHANGE GRID SIZE"/>
-
+            android:text="3 x 3"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/multiplayer_mode"
+            android:id="@+id/grid_4x4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -64,10 +74,10 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_corners"
-            android:text="MULTIPLAYER MODE"/>
+            android:text="4 x 4  (Default)"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/challenge_mode"
+            android:id="@+id/grid_5x5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -77,10 +87,10 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_corners"
-            android:text="CHALLENGE MODE"/>
+            android:text="5 x 5"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/tutorial_mode"
+            android:id="@+id/grid_6x6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -90,48 +100,7 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_corners"
-            android:text="TUTORIAL"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/view_stats_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="20dp"
-            android:layout_marginVertical="20dp"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/undo_btn_color"
-            android:text="VIEW STATS"/>
-
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:padding="20dp"-->
-<!--            android:layout_marginVertical="20dp"-->
-<!--            android:textSize="30sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:drawableTop="@mipmap/ic_launcher"-->
-<!--            android:text="TEST BUTTON"/>-->
-
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:padding="20dp"-->
-<!--            android:layout_marginVertical="20dp"-->
-<!--            android:textSize="30sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:drawableTop="@mipmap/ic_launcher"-->
-<!--            android:text="TEST BUTTON"/>-->
+            android:text="6 x 6"/>
 
     </LinearLayout>
 </ScrollView>
